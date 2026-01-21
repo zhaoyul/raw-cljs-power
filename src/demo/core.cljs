@@ -40,7 +40,7 @@
         (fn [e]
           ;; 显示弹出层
           (set! (.-display (.-style popover)) "block")
-          
+
           ;; 使用 GCL positioning 进行精确定位
           ;; 将弹出层的左下角对齐到按钮的左上角
           (gpos/positionAtAnchor
@@ -48,9 +48,9 @@
             (.-TOP_LEFT Corner)
             popover
             (.-BOTTOM_LEFT Corner))
-          
+
           (js/console.log "Scene 2: Positioned popover with GCL positioning")
-          
+
           ;; 3秒后自动隐藏
           (js/setTimeout
             (fn []
@@ -79,37 +79,37 @@
                       (this-as this
                         (.call js/Reflect.construct js/HTMLElement #js [] MyElement)
                         this))]
-      
+
       ;; 设置原型链
       (set! (.-prototype MyElement) (.create js/Object (.-prototype js/HTMLElement)))
       (set! (.. MyElement -prototype -constructor) MyElement)
-      
+
       ;; connectedCallback - 组件挂载时调用
       (set! (.. MyElement -prototype -connectedCallback)
-        (fn []
-          (this-as this
-            (js/console.log "✅ Scene 3: Component connected")
-            (set! (.-innerHTML this) "<p style='color: #4CAF50; font-size: 18px;'>👋 Hello World from Web Component!</p>"))))
-      
+            (fn []
+              (this-as this
+                (js/console.log "✅ Scene 3: Component connected")
+                (set! (.-innerHTML this) "<p style='color: #4CAF50; font-size: 18px;'>👋 Hello World from Web Component!</p>"))))
+
       ;; disconnectedCallback - 组件卸载时调用
       (set! (.. MyElement -prototype -disconnectedCallback)
-        (fn []
-          (js/console.log "👋 Scene 3: Component goodbye/removed")))
-      
+            (fn []
+              (js/console.log "👋 Scene 3: Component goodbye/removed")))
+
       ;; 定义自定义元素
       (.define js/customElements "my-element" MyElement)))
-  
+
   ;; 添加切换按钮功能
   (when-let [toggle-btn (gdom/getElement "toggle-component")]
     (when-let [mount-point (gdom/getElement "component-mount")]
       (.addEventListener toggle-btn "click"
-        (fn [e]
-          (if-let [existing (.querySelector mount-point "my-element")]
-            ;; 如果存在则移除
-            (.removeChild mount-point existing)
-            ;; 如果不存在则添加
-            (let [el (.createElement js/document "my-element")]
-              (.appendChild mount-point el))))))))
+                         (fn [e]
+                           (if-let [existing (.querySelector mount-point "my-element")]
+                             ;; 如果存在则移除
+                             (.removeChild mount-point existing)
+                             ;; 如果不存在则添加
+                             (let [el (.createElement js/document "my-element")]
+                               (.appendChild mount-point el))))))))
 
 ;; =============================================================================
 ;; Scene 4: HTML-over-the-wire Morphing
@@ -118,24 +118,24 @@
 (defn scene4-init []
   (when-let [morph-btn (gdom/getElement "morph-button")]
     (.addEventListener morph-btn "click"
-      (fn [e]
-        (when-let [container (gdom/getElement "morph-container")]
-          ;; 模拟从后端接收的新 HTML
-          (let [new-html (str "<div>"
-                           "<h3>内容已更新！ " (js/Date.) "</h3>"
-                           "<p>这是通过 morphlex 变形更新的内容，焦点和状态都被保持。</p>"
-                           "<input type='text' placeholder='输入一些文本...' value='测试焦点保持'>"
-                           "<ul>"
-                           "<li>项目 1</li>"
-                           "<li>项目 2</li>"
-                           "<li>项目 3</li>"
-                           "</ul>"
-                           "</div>")]
-            
-            ;; 使用 morphlex 进行 DOM 变形
-            (when js/window.morphlex
-              (js/window.morphlex container new-html)
-              (js/console.log "Scene 4: Morphed content with morphlex"))))))))
+                       (fn [e]
+                         (when-let [container (gdom/getElement "morph-container")]
+                           ;; 模拟从后端接收的新 HTML
+                           (let [new-html (str "<div>"
+                                               "<h3>内容已更新！ " (js/Date.) "</h3>"
+                                               "<p>这是通过 morphlex 变形更新的内容，焦点和状态都被保持。</p>"
+                                               "<input type='text' placeholder='输入一些文本...' value='测试焦点保持'>"
+                                               "<ul>"
+                                               "<li>项目 1</li>"
+                                               "<li>项目 2</li>"
+                                               "<li>项目 3</li>"
+                                               "</ul>"
+                                               "</div>")]
+
+                             ;; 使用 morphlex 进行 DOM 变形
+                             (when js/window.morphlex
+                               (js/window.morphlex container new-html)
+                               (js/console.log "Scene 4: Morphed content with morphlex"))))))))
 
 ;; =============================================================================
 ;; Scene 5: High-Performance Virtual Ledger
@@ -176,7 +176,7 @@
           [start end] (get-visible-range scroll-top viewport-height row-height)
           visible-rows (subvec ledger-data start end)
           html (apply str (map render-ledger-row visible-rows))]
-      
+
       ;; 使用 morphlex 更新（如果可用），否则使用 innerHTML
       (if js/window.morphlex
         (js/window.morphlex container html)
@@ -186,28 +186,28 @@
   (when-let [container (gdom/getElement "ledger-container")]
     ;; 初始渲染
     (render-ledger 0)
-    
+
     ;; 监听滚动事件
     (.addEventListener container "scroll"
-      (fn [e]
-        (let [scroll-top (.-scrollTop container)]
-          (render-ledger scroll-top))))
-    
+                       (fn [e]
+                         (let [scroll-top (.-scrollTop container)]
+                           (render-ledger scroll-top))))
+
     ;; 设置虚拟滚动的总高度
     (when-let [rows (gdom/getElement "ledger-rows")]
       (set! (.-minHeight (.-style rows))
             (str (* (count ledger-data) 40) "px")))
-    
+
     ;; 显示内存信息（如果可用）
     (when (.-memory js/performance)
       (let [update-memory (fn []
-                           (when-let [info-el (gdom/getElement "memory-info")]
-                             (let [used (/ (.. js/performance -memory -usedJSHeapSize) 1024 1024)]
-                               (set! (.-textContent info-el)
-                                     (str (.toFixed used 2) " MB")))))]
+                            (when-let [info-el (gdom/getElement "memory-info")]
+                              (let [used (/ (.. js/performance -memory -usedJSHeapSize) 1024 1024)]
+                                (set! (.-textContent info-el)
+                                      (str (.toFixed used 2) " MB")))))]
         (update-memory)
         (js/setInterval update-memory 2000)))
-    
+
     (js/console.log "Scene 5: Virtual ledger initialized with" (count ledger-data) "rows")))
 
 ;; =============================================================================
