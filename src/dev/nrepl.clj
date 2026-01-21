@@ -19,7 +19,7 @@
    (when-not @server
      (reset! server
              (nrepl/start-server
-              :bind "0.0.0.0"
+              :bind "127.0.0.1"
               :port port
               :handler (nrepl/default-handler #'piggieback/wrap-cljs-repl))))
    (println (format "nREPL server started on port %s" port))
@@ -34,7 +34,5 @@
 
 (defn -main [& _args]
   (start!)
-  ;; Keep process alive
-  (loop []
-    (Thread/sleep 100000)
-    (recur)))
+  ;; Keep process alive without busy-looping
+  @(promise))
