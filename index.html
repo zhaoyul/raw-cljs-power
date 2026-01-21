@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw ClojureScript Power - Demo Scenes</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .scene {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .scene h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .scene-content {
+            margin-top: 20px;
+            min-height: 100px;
+        }
+        #click-me {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        #anchor-button {
+            padding: 10px 20px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #popover {
+            display: none;
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            z-index: 1000;
+            max-width: 200px;
+        }
+        #morph-container {
+            padding: 15px;
+            border: 2px dashed #999;
+            min-height: 100px;
+        }
+        #ledger-container {
+            position: relative;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        .ledger-row {
+            display: flex;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .ledger-row:hover {
+            background: #f9f9f9;
+        }
+        .ledger-cell {
+            flex: 1;
+            padding: 0 8px;
+        }
+        .ledger-header {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Raw ClojureScript Power - Five Scenes Demo</h1>
+    
+    <!-- Scene 1: GCL Style Demo -->
+    <div class="scene">
+        <h2>场景一：基础样式与 GCL 能力 (The GCL Style Demo)</h2>
+        <div class="scene-content">
+            <button id="click-me">Click Me to Style!</button>
+            <p>点击按钮查看 GCL 样式能力</p>
+        </div>
+    </div>
+
+    <!-- Scene 2: Impossible Positioning -->
+    <div class="scene">
+        <h2>场景二：不可能的定位 (The "Impossible" Positioning)</h2>
+        <div class="scene-content">
+            <button id="anchor-button">Show Popover</button>
+            <div id="popover">这是一个精确定位的弹出层！</div>
+            <p>点击按钮查看精确定位效果</p>
+        </div>
+    </div>
+
+    <!-- Scene 3: Web Components Lifecycle -->
+    <div class="scene">
+        <h2>场景三：原生组件生命周期 (Web Components Lifecycle)</h2>
+        <div class="scene-content" id="scene3-container">
+            <p>自定义元素将在这里显示：</p>
+            <div id="component-mount"></div>
+            <button id="toggle-component">Toggle Component</button>
+        </div>
+    </div>
+
+    <!-- Scene 4: HTML-over-the-wire -->
+    <div class="scene">
+        <h2>场景四：HTML-over-the-wire (Client-side Morphing)</h2>
+        <div class="scene-content">
+            <div id="morph-container">
+                <p>初始内容</p>
+                <input type="text" placeholder="输入一些文本..." value="测试焦点保持">
+            </div>
+            <button id="morph-button">Morph Content</button>
+        </div>
+    </div>
+
+    <!-- Scene 5: Virtual Ledger -->
+    <div class="scene">
+        <h2>场景五：高性能虚拟总账 (The General Ledger)</h2>
+        <div class="scene-content">
+            <div id="ledger-container">
+                <div class="ledger-row ledger-header">
+                    <div class="ledger-cell">Date</div>
+                    <div class="ledger-cell">Account</div>
+                    <div class="ledger-cell">Description</div>
+                    <div class="ledger-cell">Debit</div>
+                    <div class="ledger-cell">Credit</div>
+                </div>
+                <div id="ledger-rows"></div>
+            </div>
+            <p>内存占用: <span id="memory-info">--</span></p>
+        </div>
+    </div>
+
+    <!-- Load morphlex for Scene 4 -->
+    <script src="https://unpkg.com/morphlex@0.0.5/dist/morphlex.min.js"></script>
+    
+    <!-- ClojureScript compiled output -->
+    <script src="out/main.js"></script>
+</body>
+</html>

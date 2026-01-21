@@ -1,0 +1,8 @@
+.cpcache/
+out/
+target/
+.cljs_rhino_repl
+pom.xml
+node_modules/
+.DS_Store
+*.swp
