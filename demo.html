@@ -165,19 +165,39 @@
         </div>
     </div>
 
-    <!-- Load Google Closure Library from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/google-closure-library@20231112.0.0/closure/goog/base.js"></script>
+    <!-- Local morphlex fallback for Scene 4 -->
+    <script src="vendor/morphlex-fallback.js"></script>
+
+    <!-- Pure JavaScript implementation with inline GCL utilities -->
     <script>
-        // Load required GCL modules
-        goog.require('goog.style');
-        goog.require('goog.positioning');
-        goog.require('goog.positioning.Corner');
-        goog.require('goog.dom');
+        // Minimal GCL-like utilities for demo purposes
+        const goog = {
+            dom: {
+                getElement: (id) => document.getElementById(id)
+            },
+            style: {
+                setStyle: (element, styles) => {
+                    Object.keys(styles).forEach(key => {
+                        const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                        element.style[key] = styles[key];
+                    });
+                }
+            },
+            positioning: {
+                Corner: {
+                    TOP_LEFT: 0,
+                    BOTTOM_LEFT: 2
+                },
+                positionAtAnchor: (anchor, anchorCorner, element, elementCorner) => {
+                    const rect = anchor.getBoundingClientRect();
+                    element.style.position = 'absolute';
+                    element.style.left = rect.left + window.scrollX + 'px';
+                    element.style.top = (rect.top + window.scrollY - element.offsetHeight) + 'px';
+                }
+            }
+        };
     </script>
-    
-    <!-- Load morphlex for Scene 4 -->
-    <script src="https://unpkg.com/morphlex@0.0.5/dist/morphlex.min.js"></script>
-    
+
     <!-- Pure JavaScript implementation (can be replaced with compiled ClojureScript) -->
     <script src="demo.js"></script>
 </body>

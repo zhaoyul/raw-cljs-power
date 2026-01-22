@@ -7,3 +7,5 @@ node_modules/
 .DS_Store
 *.swp
 /.nrepl-port
+/.clj-kondo/
+/.lsp/

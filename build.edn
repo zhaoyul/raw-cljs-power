@@ -2,5 +2,4 @@
  :init-fns [demo.core/init]
  :optimizations :advanced
  :output-to "out/main.js"
- :output-dir "out"
- :target :bundle}
+ :output-dir "out"}

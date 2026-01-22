@@ -45,9 +45,9 @@
           ;; 将弹出层的左下角对齐到按钮的左上角
           (gpos/positionAtAnchor
             anchor-btn
-            (.-TOP_LEFT Corner)
+            Corner/TOP_LEFT
             popover
-            (.-BOTTOM_LEFT Corner))
+            Corner/BOTTOM_LEFT)
 
           (js/console.log "Scene 2: Positioned popover with GCL positioning")
 
@@ -75,10 +75,10 @@
 (defn scene3-init []
   ;; 定义自定义元素
   (when-not (.get js/customElements "my-element")
-    (let [MyElement (fn []
-                      (this-as this
-                        (.call js/Reflect.construct js/HTMLElement #js [] MyElement)
-                        this))]
+    (letfn [(MyElement []
+              (this-as this
+                (.call js/Reflect.construct js/HTMLElement #js [] MyElement)
+                this))]
 
       ;; 设置原型链
       (set! (.-prototype MyElement) (.create js/Object (.-prototype js/HTMLElement)))
